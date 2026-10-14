@@ -1,3 +1,4 @@
+ 
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -8,26 +9,50 @@
     {
     internal class Program
     {
-        static void Main()
-        { }
-        public class MaglevControl
+        static void Main(string[] args)
         {
-            public static double AnalyzeTrackHotspots(double maxAllowedTemp, params double[] trackSensors)
+            Console.WriteLine("=== Пункт 4: ProcessTrackTemperatures (params) ===\n");
+
+            double maxAllowedTemp = 50.0;
+
+            // Вызов со списком значений (через запятую)
+            double percent1 = AnalyzeTrackHotspots(maxAllowedTemp, 35.2, 38.7, 42.1, 44.5, 51.3, 49.8, 60.2);
+            Console.WriteLine($"Набор 1: {percent1:F1}% датчиков выше порога {maxAllowedTemp}°C");
+
+            // Вызов с массивом (через params)
+            double[] sensorsArray = { 48.0, 49.5, 50.1, 52.3, 47.9 };
+            double percent2 = AnalyzeTrackHotspots(maxAllowedTemp);
+            Console.WriteLine($"Набор 2 (массив): {percent2:F1}% датчиков выше порога {maxAllowedTemp}°C");
+
+            // Все в норме
+            double percent3 = AnalyzeTrackHotspots(maxAllowedTemp, 40.0, 45.0, 49.9);
+            Console.WriteLine($"Набор 3 (все в норме): {percent3:F1}%");
+
+            // Пустой набор — защита от деления на ноль
+            double percent4 = AnalyzeTrackHotspots(maxAllowedTemp);
+            Console.WriteLine($"Пустой набор: {percent4:F1}%\n");
+
+            Console.WriteLine("Нажмите любую клавишу для выхода...");
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        /// Сканирует произвольный список температурных датчиков и возвращает процент
+        /// датчиков, превысивших максимальный допустимый порог.
+        /// </summary>
+        public static double AnalyzeTrackHotspots(double maxAllowedTemp, params double[] trackSensors)
+        {
+            if (trackSensors == null || trackSensors.Length == 0)
+                return 0.0;
+
+            int overheatedCount = 0;
+            foreach (var temp in trackSensors)
             {
-                if (trackSensors == null || trackSensors.Length == 0)
-                    return 0.0;
-
-                int exceedingCount = 0;
-                foreach (double temp in trackSensors)
-                {
-                    if (temp > maxAllowedTemp)
-                    {
-                        exceedingCount++;
-                    }
-                }
-
-                return (double)exceedingCount / trackSensors.Length * 100.0;
+                if (temp > maxAllowedTemp)
+                    overheatedCount++;
             }
+
+            return (overheatedCount * 100.0) / trackSensors.Length;
         }
     }
     }
