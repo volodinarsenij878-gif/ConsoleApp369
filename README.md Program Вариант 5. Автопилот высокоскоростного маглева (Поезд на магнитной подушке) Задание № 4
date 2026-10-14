@@ -1,0 +1,33 @@
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    namespace Program4
+    {
+    internal class Program
+    {
+        static void Main()
+        { }
+        public class MaglevControl
+        {
+            public static double AnalyzeTrackHotspots(double maxAllowedTemp, params double[] trackSensors)
+            {
+                if (trackSensors == null || trackSensors.Length == 0)
+                    return 0.0;
+
+                int exceedingCount = 0;
+                foreach (double temp in trackSensors)
+                {
+                    if (temp > maxAllowedTemp)
+                    {
+                        exceedingCount++;
+                    }
+                }
+
+                return (double)exceedingCount / trackSensors.Length * 100.0;
+            }
+        }
+    }
+    }
