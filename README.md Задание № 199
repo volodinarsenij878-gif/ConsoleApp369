@@ -1,0 +1,31 @@
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    namespace Program199
+    {
+    internal class Program
+    {
+        static void Main()
+        {
+            Console.Write("Зона тарифа (1—Пик, 2—Полупик, 3—Ночь): ");
+            if (!int.TryParse(Console.ReadLine(), out int zone) || zone < 1 || zone > 3)
+            {
+                Console.WriteLine("Ошибка.");
+                return;
+            }
+
+            double price;
+            switch (zone)
+            {
+                case 1: price = 7.80; break; // примерная цена
+                case 2: price = 5.20; break;
+                case 3: price = 2.90; break;
+                default: return;
+            }
+            Console.WriteLine($"Стоимость: {price:F2} руб./кВт·ч");
+        }
+    }
+    }
